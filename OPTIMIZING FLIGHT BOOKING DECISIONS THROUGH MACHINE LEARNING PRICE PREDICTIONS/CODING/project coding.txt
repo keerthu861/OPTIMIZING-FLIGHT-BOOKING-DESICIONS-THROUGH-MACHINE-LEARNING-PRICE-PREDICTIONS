@@ -1,0 +1,230 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier, GradientBoosting
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import f1_score
+from sklearn.metrics import classification_report, confusion_matrix
+import warnings
+import pickle
+from scipy import stats
+warnings.filterwarnings(&#39;ignore&#39;)
+plt.style.use(&#39;fivethirtyeight&#39;)
+data=pd.read_csv(&quot;Data_Train.csv&quot;)
+data.head()
+for i in category:
+print(i, data[i].unique())
+data.Date_of_Journey=data.Date_of_Journey.str.split(&#39;/&#39;)
+data.Date_of_Journey
+data[&#39;Date&#39;]=data.Date_of_Journey.str[0]
+data[&#39;Month&#39;]=data.Date_of_Journey.str[1]
+data[&#39;Year&#39;]=data.Date_of_Journey.str[2]
+data.Total_Stops.unique()
+data.Route=data.Route.str.split(&#39; &#39;)
+data.Route
+data[&#39;City1&#39;]=data.Route.str[0]
+data[&#39;City2&#39;]=data.Route.str[1]
+data[&#39;City3&#39;]=data.Route.str[2]
+data[&#39;City4&#39;]=data.Route.str[3]
+data[&#39;City5&#39;]=data.Route.str[4]
+data[&#39;City6&#39;]=data.Route.str[5]
+data.Dep_Time=data.Dep_Time.str.split(&#39;:&#39;)
+data[&#39;Dep_Time_Hour&#39;]=data.Dep_Time.str[0]
+data[&#39;Dep_Time_Mins&#39;]=data.Dep_Time.str[1]
+data.Arrival_Time=data.Arrival_Time.str.split(&#39; &#39;)
+data[&#39;Arrival_date&#39;]=data.Arrival_Time.str[1]
+data[&#39;Time_of_Arrival&#39;]=data.Arrival_Time.str[0]
+data[&#39;Time_of_Arrival&#39;]=data.Time_of_Arrival.str.split(&#39;:&#39;)
+data[&#39;Arrival_Time_Hour]=data.Time_of_Arrival.str[0]
+data[&#39;Arrival_Time_Mins&#39;]=data.Time_of_Arrival.str[1]
+data.Duration=data.Duration.str.split(&#39; &#39;)
+data[&#39;Travel_Hours&#39;]=data.Duration.str[0]
+data[&#39;Travel_Hours&#39;]=data[&#39;Travel_Hours&#39;].str.split(&#39;h&#39;)
+data[&#39;Travel_Hours&#39;]=data[&#39;Travel_Hours&#39;].str[0]
+data.Travel_Hours=data.Travel_Hours
+data[&#39;Travel_Mins&#39;]=data.Duration.str[1]
+data.Travel_Mins=data.Travel_Mins.str.split(&#39;m&#39;)
+data.Travel_Mins=data.Travel_Mins.str[0]
+data.Total_Stops.replace(&#39;non_stop&#39;,0,inplace=True)
+data.Total_Stops=data.Total_Stops.str.split(&#39; &#39;)
+data.Total_Stops=data.Total_Stops.str[0]
+
+data.Additional_Info.unique()
+data.Additional_Info.replace(&#39;No Info&#39;,&#39;No info&#39;,inplace=True)
+data.isnull().sum()
+data.drop([&#39;City4&#39;,&#39;City5&#39;,&#39;City6&#39;],axis=1,inplace=True)
+data.drop([&#39;Date_of_Journey&#39;,&#39;Route&#39;,&#39;Dep_Time&#39;,&#39;Arrival_Time&#39;,&#39;Duration&#39;
+],axis=1,inplace=True)
+data.drop([&#39;Time_of_Arrival&#39;],axis=1,inplace=True)
+data.isnull().sum()
+data[&#39;City3&#39;].fillna(&#39;None&#39;,inplace=True)
+data[&#39;Arrival_date&#39;].fillna(data[&#39;Date&#39;],inplace=True)
+data[&#39;Travel_Mins&#39;].fillna(0,inplace=True)
+data.info()
+data.Date=data.Date.astype(&#39;int64&#39;)
+data.Month=data.Month.astype(&#39;int64&#39;)
+data.Year=data.Year.astype(&#39;int64&#39;)
+data.Dep_Time_Hour=data.Dep_Time_Hour.astype(&#39;int64&#39;)
+data.Dep_Time_Hour=data.Dep_Time_Hour.astype(&#39;int64&#39;)
+data.Dep_Time_Mins=data.Dep_Time_Mins.astype(&#39;int64&#39;)
+data.Arrival_date=data.Arrrival_date.astype(&quot;int64&quot;)
+data.Arrival_Time_Hour=data.Arrival_Time_Hour.astype(&#39;int64&#39;)
+data.Arrival_Time_Mins=data.Arrival_Time_Mins.astype(&#39;int64&#39;)
+data.Travel_Mins=data.Travel_Mins.astype(&#39;int64&#39;)
+data[data[&#39;Travel_Hours&#39;]==&#39;5m&#39;]
+data.drop(index=6474,inplace=True,axis=0)
+data.Travel_Hours=data.Travel_Hours.astype(&#39;int64&#39;)
+categorical=[&#39;Airline&#39;,&#39;source&#39;,&#39;Destination&#39;,&#39;Additional_Info&#39;,&#39;City1&#39;]
+numerical=[&#39;Total_Stops&#39;,&#39;Date&#39;,&#39;Month&#39;,&#39;Year&#39;,&#39;Dep_Time_Hour&#39;,Dep_Time_M
+ins&#39;,&#39;Arrival_date&#39;,&#39;Arrival_Time_Hour&#39;,&#39;Arrival_Time_Mins&#39;,&#39;Travel_Hours
+&#39;,&#39;Travel_Mins&#39;]
+from sklearn.preprocessing import labelEncoder
+le=LabelEncoder()
+data.Airline=le.fit_transform(data.Airline)
+data.Source=le.fit_transform(data.Source)
+data.Destination=le.fit_transform(data.Destination)
+data.Total_Stops=le.fit_transform(data.Total_Stops)
+data.City1=le.fit_transform(data.City1)
+data.City2=le.fit_transform(data.City2)
+data.City3=le.fit_transform(data.City3)
+data.Additional_Info=le.fit_transform(data.Additional_Info)
+data.head()
+data.head()
+data =
+data[[&#39;Airline&#39;,&#39;Source&#39;,&#39;Destination&#39;,&#39;Date&#39;,&#39;Month&#39;,&#39;Year&#39;,&#39;Dep_Time_Ho
+ur&#39;,&#39;Dep_Time_Mins&#39;,&#39;Arrival_date&#39;,&#39;Arrival_Time&#39;
+data.head()
+import seaborn as sns
+c=1
+plt.figure(figsize=(20,45))
+for i in categorical:
+plt.subplot(6,3,c)
+sns.countplot(data[i])
+plt.xtricks(rotation=90)
+plt.tight_layout(pad=3.0)
+c=c+1
+
+plt.show()
+plt.figure(figsize=(15,8))
+sns.displot(data.price)
+sns.heatmap(data.corr(),annot=True)
+import seaborn as sns
+sna.boxplot(data[&#39;Price&#39;])
+y = data[&#39;Price&#39;]
+x = data.drop(columns=[&#39;Price&#39;],axis=1)
+from sklearn.preprocessing import standardScaler
+ss=StandardScaler()
+x_scaled = ss.fit_transform(x)
+x_scaled = pd.DataFrame(x_scaled,columns=x.columns)
+x_scaled.head()
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_s
+tate=42)
+x_train.head()
+from sklearn.ensemble import
+RandomForestRegressor,GradientBoostingRegressor,AdaBoostRegressor
+rfr=RandomForestRegressor()
+gb=GradientBoostingRegressor()
+ad=AdaBoostRegressor()
+from sklearn.metrics import
+r2_score,mean_absoulte_error,mean_squared_error
+for i in [rfr,gb,ad]:
+i.fit(x_train,y_train)
+y_pred=i.predict(x_test)
+test_score=r2_score(y_test,y_pred)
+train_score=r2_score(y_train, i.predict(x_train))
+if abs(train_score-test_score)&lt;=0.2:
+print(i)
+print(&quot;R2 score is&quot;,r2_score(y_test,y_pred))
+print(&quot;R2 for train data&quot;,r2_score(y_train, i.predict(x_train)))
+print(&quot;Mean Absolute Error is,&quot;mean_absolute_error(y_pred,y_test))
+print(&quot;Mean Squared Error is&quot;,mean_squared_error(y_pred,y_test))
+print(&quot;Root Mean Sqaured Error
+is&quot;,(mean_squared_error(y_pred,y_test.squared=False)))
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import
+r2_score,mean_absolute_error,mean_squared_error
+knn=KNeighborsRegressor()
+svr=SVR()
+dt=DecisionTreeRegressor()
+for i in
+i.fit(x_train,y_train)
+y_pred=i.predict(x_test)
+test_score=r2_score(y_test,y_pred)
+train_score=r2_score(y_train, i.predict(x_train))
+if abs(train_score-test_score)&lt;=0.2:
+print(i)
+print(&quot;R2 score is&quot;,r2_score(y_test,y_pred))
+print(&quot;R2 for train data&quot;,r2_score(y_train, i.predict(x_train)))
+
+print(&quot;Mean Absolute Error is,&quot;mean_absolute_error(y_pred,y_test))
+print(&quot;Mean Squared Error is&quot;,mean_squared_error(y_pred,y_test))
+print(&quot;Root Mean Squared Error
+is&quot;,mean_mean_squared_error(y_pred,y_test,squared=False)))
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import
+r2_score,mean_absolute_error,mean_squared_error
+knn=KNeighborsregressor()
+svr=SVR()
+dt=DecisionTreeRegressor()
+for i in [knn,svr,dt]:
+i.fit(x_train,y_train)
+y_pred=i.predict(x_test)
+test_score=r2_score(y_test,y_pred)
+train_score=r2_score(y_train, i.predict(x_train))
+if abs(train_score-test_score)&lt;=0.1:
+print(i)
+print(&quot;R2 score is&quot;,r2_score(y_test,y_pred))
+print(&quot;R2 for train data&quot;,r2_score(y_train, i.predict(x_train)))
+print(&quot;Mean Absolute Error is,&quot;mean_absolute_error(y_pred,y_test))
+print(&quot;Mean Squared Error is&quot;,mean_squared_error(y_pred,y_test))
+print(&quot;Root Mean Squared Error
+is&quot;,mean_mean_squared_error(y_pred,y_test,squared=False)))
+from sklearn.model_selection import cross_val_score
+for i in range(2,5):
+cv=cross_val_score(rfr,x,y,cv=i)
+print(rfr,cv.mean())
+from sklearn.model_selection import RandomizedSearchCV
+param_grid={&#39;n_estimators&#39;:[10,30,50,70,100],&#39;max_depth&#39;:[None,1,2,3],&#39;ma
+x_features&#39;:[&#39;auto,&#39;sqrt&#39;]}
+rfr=RandomForestRegressor()
+rf_res=RandomizedSearchCV(estimator=rfr,param_grid,cv=3,verbose=2,n_Jobs=
+-1)
+rf_res.fit(x_train,y_train_)
+gb=GradientBoostingRegressor()
+gb_res=RandomizedSearchCV(estimator=rfr,param_grid,cv=3,verbose=2,n_Jobs=
+-1)
+gb_res.fit(x_train,y_train_)
+rfr=RandomForestRegressor(n_estimator=10,max_features=&#39;sqrt&#39;,max_depth=No
+ne)
+rfr.fit(x_train,y_train)
+y_train_pred=rfr.predict(x_train)
+y_test_pred=rfr.predict(x_test)
+print(&quot;train accuracy&quot;,r2_score(y_train_pred,y_train))
+print(&quot;test accuracy&quot;,r2_score(y_test_pred,y_test))
+knn=KNeighborsRegressor(n_neighbors=2,algorithm=&#39;auto&#39;,metric_params=None
+,n_jobs=-1)
+knn.fit(x_train,y_train)
+y_train_pred=rfr.predict(x_train)
+y_test_pred=rfr.predict(x_test)
+print(&quot;train accuracy&quot;,r2_score(y_train_pred,y_train))
+print(&quot;test accuracy&quot;,r2_score(y_test_pred,y_test))
+
+rfr=RandomForestRegressor(n_estimator=10,max_features=&#39;sqrt&#39;,max_depth=No
+ne)
+rfr.fit(x_train,y_train)
+y_train_pred=rfr.predict(x_train)
+y_test_pred=rfr.predict(x_test)
+print(&quot;train accuracy&quot;,r2_score(y_train_pred,y_train))
+print(&quot;test accuracy&quot;,r2_score(y_test_pred,y_test))
+price_list=pd.Dataframe({&#39;Price&#39;:prices})
+price_list
+import pickle
+pickle.dump(rfr,open(&#39;model1.pk1&#39;,&#39;wb&#39;))
